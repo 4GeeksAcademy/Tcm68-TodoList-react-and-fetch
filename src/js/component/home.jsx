@@ -7,7 +7,11 @@ class TodoList extends Component {
   };
 
   componentDidMount() {
-    fetch('https://assets.breatheco.de/apis/fake/todos/user/tcm68')
+    this.fetchTodoList();
+  }
+
+  fetchTodoList() {
+    fetch('https://fake-todo-list-52f9a4ed80ce.herokuapp.com/todos/user/tcm68')
       .then(resp => resp.json())
       .then(data => {
         this.setState({ todos: data });
@@ -21,8 +25,8 @@ class TodoList extends Component {
     const { todos, newTaskInput } = this.state;
     const newTask = { label: newTaskInput, done: false };
     const updatedTodos = [...todos, newTask];
-
-    fetch('https://assets.breatheco.de/apis/fake/todos/user/tcm68', {
+  
+    fetch('https://fake-todo-list-52f9a4ed80ce.herokuapp.com/todos/user/tcm68', {
       method: 'PUT',
       body: JSON.stringify(updatedTodos),
       headers: {
@@ -30,19 +34,21 @@ class TodoList extends Component {
       }
     })
       .then(resp => resp.json())
-      .then(data => {
+      .then(() => {
         this.setState({ todos: updatedTodos, newTaskInput: '' });
       })
       .catch(error => {
         console.log(error);
       });
   };
+  
+  
 
   deleteTask = (index) => {
     const { todos } = this.state;
     const updatedTodos = todos.filter((_, i) => i !== index);
 
-    fetch('https://assets.breatheco.de/apis/fake/todos/user/tcm68', {
+    fetch('https://fake-todo-list-52f9a4ed80ce.herokuapp.com/todos/user/tcm68', {
       method: 'PUT',
       body: JSON.stringify(updatedTodos),
       headers: {
@@ -61,7 +67,7 @@ class TodoList extends Component {
   cleanAllTasks = () => {
     const updatedTodos = [];
 
-    fetch('https://assets.breatheco.de/apis/fake/todos/user/tcm68', {
+    fetch('https://fake-todo-list-52f9a4ed80ce.herokuapp.com/todos/user/tcm68', {
       method: 'PUT',
       body: JSON.stringify(updatedTodos),
       headers: {
@@ -83,15 +89,19 @@ class TodoList extends Component {
     return (
       <div className="todo-list-container">
         <h1 className="todo-list-title">Todo List</h1>
-        <ul className="todo-list">
-          {todos.map((todo, index) => (
-            <li key={index} className="todo-item">
-              {todo.label}
-              <button onClick={() => this.deleteTask(index)}>Delete</button>
-              {index < todos.length - 1 && <hr className="task-separator" />}
-            </li>
-          ))}
-        </ul>
+        {todos.length === 0 ? (
+          <p>No tasks to display.</p>
+        ) : (
+          <ul className="todo-list">
+            {todos.map((todo, index) => (
+              <li key={index} className="todo-item">
+                {todo.label}
+                <button onClick={() => this.deleteTask(index)}>Delete</button>
+                {index < todos.length - 1 && <hr className="task-separator" />}
+              </li>
+            ))}
+          </ul>
+        )}
         <div className="todo-input-container">
           <input
             type="text"

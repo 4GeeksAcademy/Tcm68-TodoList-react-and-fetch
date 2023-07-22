@@ -101,3 +101,8 @@
 .clean-all-button:active {
   background-color: #a93226;
 }
+
+.fixed-top{
+  width: 380px;
+  padding-top: 50px;
+}

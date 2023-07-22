@@ -87,8 +87,19 @@ class TodoList extends Component {
     const { todos, newTaskInput } = this.state;
 
     return (
-      <div className="todo-list-container">
+      <div className="todo-list-container fixed-top container">
         <h1 className="todo-list-title">Todo List</h1>
+        
+        <div className="todo-input-container">
+          <input
+            type="text"
+            value={newTaskInput}
+            onChange={(e) => this.setState({ newTaskInput: e.target.value })}
+            placeholder="Enter a new task"
+            className="todo-input"
+          />
+          <button onClick={this.addTask} className="todo-button">Add Task</button>
+        </div>
         {todos.length === 0 ? (
           <p>No tasks to display.</p>
         ) : (
@@ -102,16 +113,6 @@ class TodoList extends Component {
             ))}
           </ul>
         )}
-        <div className="todo-input-container">
-          <input
-            type="text"
-            value={newTaskInput}
-            onChange={(e) => this.setState({ newTaskInput: e.target.value })}
-            placeholder="Enter a new task"
-            className="todo-input"
-          />
-          <button onClick={this.addTask} className="todo-button">Add Task</button>
-        </div>
         <button onClick={this.cleanAllTasks} className="clean-all-button">Clean All Tasks</button>
       </div>
     );
